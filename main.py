@@ -10,6 +10,7 @@ from data import ACTORS
 from modules import get_names, get_actor, get_id
 
 app = Flask(__name__)
+
 topSecretKey = secrets.token_urlsafe(16)
 app.secret_key = topSecretKey
 
