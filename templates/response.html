@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Selected Actor: {{ name }}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 ps-md-5">
+
+      <!-- note, the id is not used in the template -->
+
+      <h1 class="pt-5 pb-2">{{ card['name'] }}</h1>
+
+      {% for card in card_list %}
+        <p>{{ card.name }}
+          <img src="{{ card['image_uris']['normal'] }}" alt="Photo: {{ card['name'] }}" class="img-fluid pt-5">
+        </p>
+        {% endfor %}
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %}
