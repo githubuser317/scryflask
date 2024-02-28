@@ -29,26 +29,40 @@ class NameForm(FlaskForm):
 
 # all Flask routes below
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    names = get_names(ACTORS)
-    # you must tell the variable 'form' what you named the class, above
-    # 'form' is the variable name used in this template: index.html
-    form = NameForm()
-    message = "We must imagine Sisyphus happy."
-    if form.validate_on_submit():
-        name = form.name.data
-        if name.lower() in names:
-            # empty the form field
-            form.name.data = ""
-            id = get_id(ACTORS, name)
-            # redirect the browser to another route and template
-            return redirect( url_for('actor', id=id) )
-        else:
-            message = "That actor is not in our database."
-    return render_template('index.html', names=names, form=form, message=message)
+@app.route('/', methods=['GET'])
+def search_api():
+    card_search = NameForm.name
+    api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
 
-@app.route('/actor/<id>')
+    api_url = api_prefix + card_search
+
+    card_list = []
+
+    while True:
+        paging_list = loads(get(api_url).text)
+
+        for card in paging_list['data']:
+            card_data = {
+                'name': card['name'],
+                'set': card['set_name'],
+                'num': card['collector_number'],
+                'price': card['prices']['usd']
+            }
+
+            card_list.append(card_data)
+
+        if not paging_list['has_more']:
+            break
+
+        api_url = paging_list['next_page']
+    #return card_list
+    message = "The Truth"
+       
+    return redirect( url_for('response') )
+        
+    return render_template('searchpage.html', message=message)
+
+@app.route('/response/')
 def actor(id):
     # run function to get actor data based on the id in the path
     id, name, photo = get_actor(ACTORS, id)
@@ -57,18 +71,7 @@ def actor(id):
         return render_template('404.html'), 404
     else:
         # pass all the data for the selected actor to the template
-        return render_template('actor.html', id=id, name=name, photo=photo)
-
-# 2 routes to handle errors - they have templates too
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return render_template('500.html'), 500
-
+        return render_template('response.html', id=id, name=name, photo=photo)
 
 # keep this as is
 if __name__ == '__main__':
