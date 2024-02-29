@@ -6,8 +6,7 @@ from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
 
-from data import ACTORS
-from modules import get_names, get_actor, get_id
+from modules import search_api
 
 app = Flask(__name__)
 
@@ -29,49 +28,22 @@ class NameForm(FlaskForm):
 
 # all Flask routes below
 
-@app.route('/', methods=['GET'])
-def search_api():
-    card_search = NameForm.name
-    api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
-
-    api_url = api_prefix + card_search
-
-    card_list = []
-
-    while True:
-        paging_list = loads(get(api_url).text)
-
-        for card in paging_list['data']:
-            card_data = {
-                'name': card['name'],
-                'set': card['set_name'],
-                'num': card['collector_number'],
-                'price': card['prices']['usd']
-            }
-
-            card_list.append(card_data)
-
-        if not paging_list['has_more']:
-            break
-
-        api_url = paging_list['next_page']
-    #return card_list
-    message = "The Truth"
-       
-    return redirect( url_for('response') )
-        
-    return render_template('searchpage.html', message=message)
-
+@app.route('/', methods=['GET', 'POST'])
+def index():    
+    searchTerm = str(NameForm().name)
+    # you must tell the variable 'form' what you named the class, above
+    # 'form' is the variable name used in this template: index.html
+    form = NameForm()
+    message = "Be Careful What You Seek"
+    if form.validate_on_submit():
+        SearchArray = search_api(searchTerm)
+        # redirect the browser to another route and template
+        return redirect( url_for('response') )
+    return render_template('searchpage.html', form=form, message=message)
+    
 @app.route('/response/')
-def actor(id):
-    # run function to get actor data based on the id in the path
-    id, name, photo = get_actor(ACTORS, id)
-    if name == "Unknown":
-        # redirect the browser to the error template
-        return render_template('404.html'), 404
-    else:
-        # pass all the data for the selected actor to the template
-        return render_template('response.html', id=id, name=name, photo=photo)
+def response():
+    return render_template('response.html')
 
 # keep this as is
 if __name__ == '__main__':

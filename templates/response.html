@@ -15,6 +15,8 @@ Selected Actor: {{ name }}
 
       <h1 class="pt-5 pb-2">{{ card['name'] }}</h1>
 
+      <p><a href="{{ url_for('searchpage') }}">Return to search page</a></p>
+
       {% for card in card_list %}
         <p>{{ card.name }}
           <img src="{{ card['image_uris']['normal'] }}" alt="Photo: {{ card['name'] }}" class="img-fluid pt-5">
