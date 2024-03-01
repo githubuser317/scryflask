@@ -5,8 +5,7 @@ from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
 
-#from data import ACTORS
-from modules import get_names, get_actor, get_id, search_api
+from modules import search_api
 
 app = Flask(__name__)
 app.secret_key = 'tO$&!|0wkamvVia0?n$NqIRVWOG'
@@ -21,7 +20,7 @@ csrf = CSRFProtect(app)
 # see the route for "/" and "index.html" to see how this is used
 class NameForm(FlaskForm):
     name = StringField('Which magic card do you seek?', validators=[DataRequired(), Length(2, 40)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Submit and Bring Forth The Arcane!')
 
 
 # all Flask routes below
@@ -37,26 +36,14 @@ def index():
     if form.validate_on_submit():
         return redirect( url_for('result',searchterm=searchterm) )
     else:
-        message = "That actor is not in our database."
-    """ if form.validate_on_submit():
-        name = form.name.data
-        if name.lower() in names:
-            # empty the form field
-            form.name.data = ""
-            id = get_id(ACTORS, name)
-            # redirect the browser to another route and template
-            return redirect( url_for('actor', id=id) )
-        else:
-            message = "That actor is not in our database."  """
+        message = "The Blind Eternities Await"
+    
     return render_template('searchpage.html', searchcall=searchcall, searchterm=searchterm, form=form, message=message)
 
 @app.route('/<searchterm>')
 def result(searchterm):
-    """ form = NameForm()
-    searchterm = form.name.data """
     searchcall = search_api(searchterm)
-     # run function to get actor data based on the id in the path
-    
+        
     return render_template('response.html',searchterm=searchterm, searchcall=searchcall)
 
 # 2 routes to handle errors - they have templates too
@@ -72,4 +59,4 @@ def internal_server_error(e):
 
 # keep this as is
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='10.0.0.134')
