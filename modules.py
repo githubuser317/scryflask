@@ -7,9 +7,9 @@ from json import loads
 #retrieve list of cards matching the search term
 def search_api(searchTerm):
     api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
-
-    api_url = api_prefix + str(searchTerm)
-
+    
+    api_url = api_prefix + searchTerm
+    
     card_list = []
 
     while True:
@@ -30,5 +30,3 @@ def search_api(searchTerm):
 
         api_url = paging_list['next_page']
     return card_list
-
-search_api(wizard)
