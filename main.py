@@ -6,9 +6,12 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
 
 from modules import search_api
+import secrets
 
 app = Flask(__name__)
-app.secret_key = 'tO$&!|0wkamvVia0?n$NqIRVWOG'
+
+topSecretKey = secrets.token_urlsafe(16)
+app.secret_key = topSecretKey
 
 # Bootstrap-Flask requires this line
 bootstrap = Bootstrap5(app)
