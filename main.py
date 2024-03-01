@@ -22,7 +22,7 @@ csrf = CSRFProtect(app)
 # "NameForm" can change; "(FlaskForm)" cannot
 # see the route for "/" and "index.html" to see how this is used
 class NameForm(FlaskForm):
-    name = StringField('Which magic card do you seek?', validators=[DataRequired(), Length(2, 40)])
+    name = StringField('Which Magic card do you seek?', validators=[DataRequired(), Length(2, 40)])
     submit = SubmitField('Submit and Bring Forth The Arcane!')
 
 
@@ -30,26 +30,20 @@ class NameForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # you must tell the variable 'form' what you named the class, above
-    # 'form' is the variable name used in this template: index.html
     form = NameForm()
     searchterm = form.name.data
     searchcall = search_api(searchterm)
-    message = "Good Luck"
+    message = ""
     if form.validate_on_submit():
         return redirect( url_for('result',searchterm=searchterm) )
     else:
         message = "The Blind Eternities Await"
-    
     return render_template('searchpage.html', searchcall=searchcall, searchterm=searchterm, form=form, message=message)
 
 @app.route('/<searchterm>')
 def result(searchterm):
     searchcall = search_api(searchterm)
-        
     return render_template('response.html',searchterm=searchterm, searchcall=searchcall)
-
-# 2 routes to handle errors - they have templates too
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -59,7 +53,5 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-
-# keep this as is
 if __name__ == '__main__':
     app.run(debug=True, host='10.0.0.134')
