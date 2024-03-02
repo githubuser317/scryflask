@@ -14,7 +14,7 @@ Selected Search: {{ searchterm }}
 	    
       {% for card in searchcall %}
         <h1 class="pt-5 pb-2">{{ card.name }}</h1>
-        <h1 class="pt-5 pb-2">{{ card.set}}, ${{ card.price }}</h1>
+        <h1 class="pt-5 pb-2">{{ card.set}}, #{{ card.num }}, ${{ card.price }}</h1>
           <img src="{{ card.image }}" alt="Photo: {{ card.name }}" class="img-fluid pt-5">
         </p>
         {% endfor %}
