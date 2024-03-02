@@ -10,12 +10,12 @@ Selected Search: {{ searchterm }}
 <div class="container">
   <div class="row">
     <div class="col-md-6 ps-md-5">
-      <p><a href="{{ url_for('index') }}">Return to search page</a></p>
+      <h1><a href="{{ url_for('index') }}">Return to search page</a></h1>
 	    
       {% for card in searchcall %}
-        <h1 class="pt-5 pb-2">{{ card['name'] }}</h1>
-        <h2 class="pt-5 pb-2">{{ card['set'], card['price'] }}</h2>
-          <img src="{{ card['image'] }}" alt="Photo: {{ card['name'] }}" class="img-fluid pt-5">
+        <h1 class="pt-5 pb-2">{{ card.name }}</h1>
+        <h1 class="pt-5 pb-2">{{ card.set}}, ${{ card.price }}</h1>
+          <img src="{{ card.image }}" alt="Photo: {{ card.name }}" class="img-fluid pt-5">
         </p>
         {% endfor %}
     </div>

@@ -18,9 +18,6 @@ bootstrap = Bootstrap5(app)
 # Flask-WTF requires this line
 csrf = CSRFProtect(app)
 
-# with Flask-WTF, each web form is represented by a class
-# "NameForm" can change; "(FlaskForm)" cannot
-# see the route for "/" and "index.html" to see how this is used
 class NameForm(FlaskForm):
     name = StringField('Which Magic card do you seek?', validators=[DataRequired(), Length(2, 40)])
     submit = SubmitField('Submit and Bring Forth The Arcane!')
