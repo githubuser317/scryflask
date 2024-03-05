@@ -35,15 +35,13 @@ def search_api(search):
 
     api_url = api_prefix + f'{search}'
 
-    paging_list = loads(get(api_url).text)
-
     card_list = []
 
     while True:
         paging_list = loads(get(api_url).text)
         for card in paging_list['data']:
             #the try/except here is because double face cards dont have the same image_uri path and throws a key error
-            #will i fix this later?
+            #will i fix this later? If set contains Magic Online or Alchemy or doesnt have paper game type or digital = true then...
             try:
                 card_data = {
                     'name': card['name'],
