@@ -1,35 +1,6 @@
 from requests import get
 from json import loads
 
-""" def search_api(source):
-    api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
-    
-    api_url = api_prefix + f'{source}'
-
-    card_list = []
-    paging_list = []
-    
-    while True:
-        paging_list = loads(get(api_url).text)
-
-        for card in paging_list['data']:
-            card_data = {
-                'name': card['name'],
-                'set': card['set_name'],
-                'num': card['collector_number'],
-                'price': card['prices']['usd'],
-                'image': card['image_uris']['normal']
-            }
-
-            card_list.append(card_data)
-
-        if not paging_list['has_more']:
-            break
-
-        api_url = paging_list['next_page']
-   
-    return card_list """
-
 def search_api(search):   
     api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
 
@@ -61,3 +32,12 @@ def search_api(search):
             break
 
     return card_list
+
+def total_results(search):   
+    api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
+
+    api_url = api_prefix + f'{search}'
+
+    total = loads(get(api_url).text)
+
+    return total['total_cards']
