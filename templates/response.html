@@ -14,6 +14,9 @@ Selected Search: {{ searchterm }}
         <p>There are a total of {{ total }} cards with "{{ searchterm }}" in the card title.
           Below are the results the alphabetical order.
         </p>
+        <p>{{ best.name }}, {{ best.prices.usd}}, {{ best.set_name }}
+
+        </p>
 	    
       {% for card in searchcall %}
         <h1 class="pt-5 pb-2">{{ card.name }}</h1>

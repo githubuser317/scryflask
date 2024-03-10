@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
 
-from modules import search_api,total_results
+from modules import search_api,total_results,best_card
 import secrets
 
 app = Flask(__name__)
@@ -41,7 +41,8 @@ def index():
 def result(searchterm):
     searchcall = search_api(searchterm)
     total = total_results(searchterm)
-    return render_template('response.html',searchterm=searchterm, searchcall=searchcall, total=total)
+    best = best_card(searchterm)
+    return render_template('response.html',searchterm=searchterm, searchcall=searchcall, total=total, best=best)
 
 @app.errorhandler(404)
 def page_not_found(e):
