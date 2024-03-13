@@ -11,10 +11,21 @@ Selected Search: {{ searchterm }}
   <div class="row">
     <div class="col-md-6 ps-md-5">
       <h2><a href="{{ url_for('index') }}">Return to search page</a></h2>
-        <p>There are a total of {{ total }} cards with "{{ searchterm }}" in the card title.
-          Below are the results the alphabetical order.
+        
+      {% if total < 50 %}
+        <p>There are not a ton of cards with "{{ searchterm }}" in the title. Just <b>{{ total }}</b> cards total. 
         </p>
+        {% else %}
+        <p>There are a nice chunk of cards, <b>{{ total }}</b>, with "{{ searchterm }}" in the card title.
+        </p>
+          {% endif %}
+
+        <p>Below are the results the alphabetical order. But let's start with the most expensive card 
+          I can find with that search term...
+        </p>  
+
         <p>{{ best.name }}, {{ best.prices.usd}}, {{ best.set_name }}
+          <img src="{{ best.image_uris.normal }}" alt="Photo: {{ best.name }}" class="img-fluid pt-5">
 
         </p>
 	    
@@ -22,7 +33,7 @@ Selected Search: {{ searchterm }}
         <h1 class="pt-5 pb-2">{{ card.name }}</h1>
         <h1 class="pt-5 pb-2">{{ card.set}}, #{{ card.num }}, ${{ card.price }}</h1>
           <img src="{{ card.image }}" alt="Photo: {{ card.name }}" class="img-fluid pt-5">
-        </p>
+        
         {% endfor %}
     </div>
   </div>

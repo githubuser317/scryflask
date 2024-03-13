@@ -29,13 +29,12 @@ class NameForm(FlaskForm):
 def index():
     form = NameForm()
     searchterm = form.name.data
-    searchcall = search_api(searchterm)
     message = ""
     if form.validate_on_submit():
         return redirect( url_for('result',searchterm=searchterm) )
     else:
         message = "The Blind Eternities Await"
-    return render_template('searchpage.html', searchcall=searchcall, searchterm=searchterm, form=form, message=message)
+    return render_template('searchpage.html', form=form, message=message)
 
 @app.route('/<searchterm>')
 def result(searchterm):

@@ -1,6 +1,7 @@
 from requests import get
 from json import loads
 
+#the primary function. collects subset of card data into a new list
 def search_api(search):   
     api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
 
@@ -33,6 +34,28 @@ def search_api(search):
 
     return card_list
 
+def card_lookup(search):   
+    api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
+
+    api_url = api_prefix + f'{search}'
+
+    card_list = []
+
+    while True:
+        paging_list = loads(get(api_url).text)
+        for card in paging_list['data']:
+            try:
+                card_list.append(card)
+            except (KeyError,TypeError):
+                continue
+
+        if paging_list['has_more']:
+            api_url = paging_list['next_page']
+        else:    
+            break
+
+    return card_list
+
 def total_results(search):   
     api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
 
@@ -42,7 +65,7 @@ def total_results(search):
 
     return total['total_cards']
 
-
+#returns the card with the highest price
 def best_card(search):   
     api_prefix = "https://api.scryfall.com/cards/search?unique=prints&q="
 
