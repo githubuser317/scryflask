@@ -52,4 +52,5 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='10.0.0.134')
+    app.run(debug=True)
+    #add host='x.y.z.w' to specify IP
